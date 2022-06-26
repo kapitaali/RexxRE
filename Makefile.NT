@@ -1,0 +1,62 @@
+# Win32 Makefile for RexxRE
+# this makefile works with the microsoft visual c compiler
+# you are meant to copy Makefile.nt to the name Makefile, and
+# then type `make dist' to get an optimised version of the library
+
+#  The contents of this file are subject to the Mozilla Public License
+#  Version 1.1 (the "License"); you may not use this file except in
+#  compliance with the License. You may obtain a copy of the License at
+#  http://www.mozilla.org/MPL/
+
+#  Software distributed under the License is distributed on an "AS IS"
+#  basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+#  License for the specific language governing rights and limitations
+#  under the License.
+
+#  The Original Code is RexxRE.
+
+#  The Initial Developer of the Original Code is Patrick TJ McPhee.
+#  Portions created by Patrick McPhee are Copyright © 2003
+#  Patrick TJ McPhee. All Rights Reserved.
+
+#  Contributors:
+
+# $Header: C:/ptjm/rexx/rexxre/RCS/Makefile.NT 1.2 2003/04/29 15:57:33 ptjm Rel $
+
+DEBUG=-Zi
+DOPT=-Ox -G6
+INCDIR=../regina
+LIBDIR=..\regina
+CDEFS=
+CFLAGS=$(OPT) $(DEBUG) $(CDEFS) -nologo -GF -I$(INCDIR) -Iregex -MD
+LDFLAGS=-LD $(OPT) $(DEBUG) -MD
+CC=cl
+
+PROJECT=rexxre
+
+
+OBJS=$(PROJECT).obj regcomp.obj regexec.obj regerror.obj\
+ regfree.obj rxsupport.obj $(PROJECT).res
+
+$(PROJECT).dll : $(OBJS) $(PROJECT).def
+	$(CC) $(CFLAGS) $(LDFLAGS) -Fe$(PROJECT).dll $(OBJS) $(PROJECT).def $(LIBDIR)\regina.lib
+
+regcomp.obj : regex/regcomp.c
+	$(CC) -c $(CFLAGS) regex/regcomp.c
+
+regexec.obj : regex/regexec.c
+	$(CC) -c $(CFLAGS) regex/regexec.c
+
+regfree.obj : regex/regfree.c
+	$(CC) -c $(CFLAGS) regex/regfree.c
+
+regerror.obj : regex/regerror.c
+	$(CC) -c $(CFLAGS) regex/regerror.c
+
+
+dist:
+	$(MAKE) $(MAKEFLAGS) OPT="$(DOPT)" DEBUG=""
+
+
+clean:
+	del /f *.obj *.pdb *.lib *.dll *.exp *.ilk *.res

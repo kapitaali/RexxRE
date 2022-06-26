@@ -1,0 +1,24 @@
+# Copyright 2003 Patrick TJ McPhee
+# Distributed under the terms of the Mozilla Public Licence
+# You can obtain a copy of the licence at http://www.mozilla.org/MPL
+# The Original Code is RexxRE
+# The Initial Developer is Patrick TJ McPhee
+# $Header: C:/ptjm/rexx/rexxre/RCS/Makefile.doc 1.2 2003/05/26 19:35:34 ptjm Rel $
+
+# this makefile produces the .pdf documentation. It requires pdflatex
+# (v.14g or later). On win32 systems, you'll need rm to run the clean
+# target 
+
+PROJECT=rexxre
+
+doc : $(PROJECT).pdf
+
+
+# need to do this three times to get congruence
+$(PROJECT).pdf : $(PROJECT).tex
+	pdflatex $(PROJECT)
+	pdflatex $(PROJECT)
+	pdflatex $(PROJECT)
+
+clean :
+	-rm $(PROJECT).pdf $(PROJECT).log $(PROJECT).aux $(PROJECT).toc $(PROJECT).out

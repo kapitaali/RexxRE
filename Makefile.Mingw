@@ -1,0 +1,69 @@
+# Win32 Makefile for RexxRE
+# this makefile works with mingw gcc
+# you are meant to copy Makefile.mingw to the name Makefile, and
+# then type `make dist' to get an optimised version of the library
+
+#  The contents of this file are subject to the Mozilla Public License
+#  Version 1.1 (the "License"); you may not use this file except in
+#  compliance with the License. You may obtain a copy of the License at
+#  http://www.mozilla.org/MPL/
+
+#  Software distributed under the License is distributed on an "AS IS"
+#  basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+#  License for the specific language governing rights and limitations
+#  under the License.
+
+#  The Original Code is RexxRE.
+
+#  The Initial Developer of the Original Code is Patrick TJ McPhee.
+#  Portions created by Patrick McPhee are Copyright © 2003
+#  Patrick TJ McPhee. All Rights Reserved.
+
+#  Contributors:
+
+# $Header: C:/ptjm/rexx/rexxre/RCS/Makefile.Mingw 1.2 2003/04/29 15:57:30 ptjm Rel $
+
+DEBUG=-g
+DOPT=-O2 -fno-stack-check -fomit-frame-pointer -fexpensive-optimizations -mcpu=pentiumpro
+INCDIR=../regina
+LIBDIR=../regina
+CDEFS=
+CFLAGS=$(OPT) $(DEBUG) $(CDEFS) -pipe -I$(INCDIR) -Iregex -mdll
+LDFLAGS=-Wl,--enable-stdcall-fixup,--major-image-version=1,--minor-image-version=0 -s -L$(LIBDIR)
+CC=gcc
+
+PROJECT=rexxre
+
+
+OBJS=$(PROJECT).o regcomp.o regexec.o regerror.o\
+ regfree.o rxsupport.o $(PROJECT)res.o
+
+$(PROJECT).dll : $(OBJS) $(PROJECT).def
+	$(CC) $(CFLAGS) $(LDFLAGS) -o$(PROJECT).dll $(OBJS) $(PROJECT).def -lregina
+
+$(PROJECT)res.o : $(PROJECT).rc
+	windres $(PROJECT).rc $(PROJECT)res.o
+
+regcomp.o : regex/regcomp.c
+	$(CC) -c $(CFLAGS) regex/regcomp.c
+
+regexec.o : regex/regexec.c
+	$(CC) -c $(CFLAGS) regex/regexec.c
+
+regfree.o : regex/regfree.c
+	$(CC) -c $(CFLAGS) regex/regfree.c
+
+regerror.o : regex/regerror.c
+	$(CC) -c $(CFLAGS) regex/regerror.c
+
+
+dist:
+	$(MAKE) $(MAKEFLAGS) OPT="$(DOPT)" DEBUG=""
+
+
+clean:
+	-rm *.o
+	-rm *.lib
+	-rm *.dll
+	-rm *.exp
+

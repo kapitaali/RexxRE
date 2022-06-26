@@ -1,0 +1,9 @@
+LIBRARY rexxre
+EXPORTS recomp
+EXPORTS reexec
+EXPORTS refree
+EXPORTS reerror
+EXPORTS reparse
+EXPORTS reversion
+EXPORTS reloadfuncs
+EXPORTS redropfuncs

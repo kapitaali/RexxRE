@@ -1,0 +1,6 @@
+List of changes
+
+1.0.1	significant changes to ReParse(): removes hang when the delimiter
+	or field RE matches a zero-length string.
+	Added Rexx/Trans and OS/2 binaries to main distribution.
+1.0.0	initial revision
